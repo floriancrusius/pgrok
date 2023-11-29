@@ -16,6 +16,7 @@ require (
 	github.com/ogier/pflag v0.0.1
 	github.com/phayes/freeport v0.0.0-20180830031419-95f893ade6f2
 	github.com/rcrowley/go-metrics v0.0.0-20190826022208-cac0b30c2563
+	golang.org/x/term v0.15.0
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/inconshreveable/go-update.v0 v0.0.0-20150814200126-d8b0b1d421aa
 	gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0

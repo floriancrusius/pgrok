@@ -5,6 +5,7 @@ import (
 	"os"
 	"pgrok/version"
 	"strconv"
+	"strings"
 
 	flag "github.com/ogier/pflag"
 )
@@ -156,12 +157,13 @@ func ParseArgs() (opts *Options, err error) {
 		command:       flag.Arg(0),
 	}
 
-	fmt.Println("flag", flag.Args())
-	fmt.Println("os", os.Args)
-
 	args := flag.Args()
-	if opts.command == "tcp" {
-		if len(args) == 3 {
+	if "tcp" == opts.command || "http" == opts.command || "https" == opts.command || "http+https" == opts.command {
+		opts.protocol = opts.command
+		args = args[1:]
+	}
+	if opts.protocol == "tcp" {
+		if len(args) == 2 {
 			remoteport, ok := strconv.Atoi(args[len(args)-1])
 			if ok != nil {
 				err = fmt.Errorf("TCP Port must be an integer, got %s", args[len(args)-1])
@@ -170,8 +172,12 @@ func ParseArgs() (opts *Options, err error) {
 			opts.remoteport = remoteport
 			args = args[:len(args)-1]
 		}
-		args = args[1:]
-		opts.protocol = "tcp"
+	}
+	if strings.Contains(opts.protocol, "http") {
+		if len(args) == 2 {
+			opts.subdomain = args[len(args)-1]
+			args = args[:len(args)-1]
+		}
 	}
 	switch opts.command {
 	case "list":

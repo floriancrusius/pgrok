@@ -3,6 +3,7 @@ package client
 import (
 	"fmt"
 	"github.com/phayes/freeport"
+	"golang.org/x/term"
 	"gopkg.in/yaml.v1"
 	"io/ioutil"
 	"net"
@@ -14,6 +15,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 type Configuration struct {
@@ -85,6 +87,13 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 		config.Secret = opts.secret
 		if config.Secret == "" {
 			config.Secret = os.Getenv("PGROK_SECRET")
+			if config.Secret == "" {
+				fmt.Print("Enter Password: ")
+				bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+				if err == nil {
+					config.Secret = strings.TrimSpace(string(bytePassword))
+				}
+			}
 		}
 	}
 
