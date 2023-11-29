@@ -2,12 +2,10 @@ package server
 
 import (
 	"crypto/tls"
-	"math/rand"
 	"os"
 	"pgrok/conn"
 	log "pgrok/log"
 	"pgrok/msg"
-	"pgrok/util"
 	"runtime/debug"
 	"time"
 )
@@ -104,13 +102,6 @@ func Main() {
 
 	// init logging
 	log.LogTo(opts.logto, opts.loglevel)
-
-	// seed random number generator
-	seed, err := util.RandomSeed()
-	if err != nil {
-		panic(err)
-	}
-	rand.Seed(seed)
 
 	// init tunnel/control registry
 	registryCacheFile := os.Getenv("REGISTRY_CACHE_FILE")

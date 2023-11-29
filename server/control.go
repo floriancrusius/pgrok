@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"pgrok/conn"
@@ -86,6 +87,12 @@ func NewControl(ctlConn conn.Conn, authMsg *msg.Auth) {
 	c.id = authMsg.ClientId
 	if c.id == "" {
 		// it's a new session, assign an ID
+		if opts.secret != "" {
+			if opts.secret != authMsg.Password {
+				failAuth(errors.New("Authentication Failed"))
+				return
+			}
+		}
 		if c.id, err = util.SecureRandId(16); err != nil {
 			failAuth(err)
 			return
@@ -97,7 +104,7 @@ func NewControl(ctlConn conn.Conn, authMsg *msg.Auth) {
 	ctlConn.AddLogPrefix(c.id)
 
 	if authMsg.Version != version.Proto {
-		failAuth(fmt.Errorf("Incompatible versions. Server %s, client %s. Download a new version at https://github.com/jerson/pgrok", version.MajorMinor(), authMsg.Version))
+		failAuth(fmt.Errorf("Incompatible versions. Server %s, client %s. Download a new version at https://github.com/ninoDeme/pgrok", version.MajorMinor(), authMsg.Version))
 		return
 	}
 

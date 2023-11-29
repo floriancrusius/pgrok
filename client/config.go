@@ -18,6 +18,7 @@ import (
 
 type Configuration struct {
 	HttpProxy          string                          `yaml:"http_proxy,omitempty"`
+	Secret             string                          `yaml:"secret,omitempty"`
 	ServerAddr         string                          `yaml:"server_addr,omitempty"`
 	InspectAddr        string                          `yaml:"inspect_addr,omitempty"`
 	TrustHostRootCerts bool                            `yaml:"trust_host_root_certs,omitempty"`
@@ -78,6 +79,13 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 	// set configuration defaults
 	if config.ServerAddr == "" {
 		config.ServerAddr = defaultServerAddr
+	}
+
+	if config.Secret == "" {
+		config.Secret = opts.secret
+		if config.Secret == "" {
+			config.Secret = os.Getenv("PGROK_SECRET")
+		}
 	}
 
 	if opts.serveraddr != "" {

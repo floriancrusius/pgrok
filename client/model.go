@@ -53,6 +53,7 @@ type ClientModel struct {
 	tlsConfig     *tls.Config
 	tunnelConfig  map[string]*TunnelConfiguration
 	configPath    string
+	secret        string
 	TLS           bool
 	TLSClientCrt  string
 	TLSClientKey  string
@@ -106,6 +107,9 @@ func newClientModel(config *Configuration, ctl mvc.Controller) *ClientModel {
 
 		// TLS for dial port
 		TLS: config.TLS,
+
+		// Secret
+		secret: config.Secret,
 
 		// TLSClientCrt for connect using a client certificate
 		TLSClientCrt: config.TLSClientCrt,
@@ -259,6 +263,7 @@ func (c *ClientModel) control() {
 		ClientId:  c.id,
 		OS:        runtime.GOOS,
 		Arch:      runtime.GOARCH,
+		Password:  c.secret,
 		Version:   version.Proto,
 		MmVersion: version.MajorMinor(),
 		User:      c.authToken,

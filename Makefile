@@ -4,6 +4,10 @@ APP_VERSION?=latest
 
 default: deps build
 
+windows: deps assets
+	go build -o pgrokd.exe ./cmd/pgrokd
+	go build -o pgrok.exe ./cmd/pgrok
+	
 deps: 
 	go mod download
 

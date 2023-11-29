@@ -37,6 +37,7 @@ Examples:
 
 type Options struct {
 	config        string
+	secret        string
 	logto         string
 	loglevel      string
 	authtoken     string
@@ -65,6 +66,11 @@ func ParseArgs() (opts *Options, err error) {
 		"config",
 		"",
 		"Path to pgrok configuration file. (default: $HOME/.pgrok)")
+
+	secret := flag.String(
+		"secret",
+		"",
+		"Secret Password")
 
 	logto := flag.String(
 		"log",
@@ -135,6 +141,7 @@ func ParseArgs() (opts *Options, err error) {
 
 	opts = &Options{
 		config:        *config,
+		secret:        *secret,
 		logto:         *logto,
 		loglevel:      *loglevel,
 		httpauth:      *httpauth,

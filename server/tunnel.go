@@ -55,9 +55,15 @@ func registerVhost(t *Tunnel, protocol string, servingPort int) (err error) {
 		vhost = fmt.Sprintf("%s:%d", opts.domain, servingPort)
 	}
 
-	// Canonicalize virtual host by removing default port (e.g. :80 on HTTP)
-	defaultPort, ok := defaultPortMap[protocol]
-	if !ok {
+	var defaultPort int
+	var ok error
+	if protocol == "http" {
+		defaultPort, ok = strconv.Atoi(opts.httpAddr[1:])
+	}
+	if protocol == "https" {
+		defaultPort, ok = strconv.Atoi(opts.httpsAddr[1:])
+	}
+	if ok != nil {
 		return fmt.Errorf("Couldn't find default port for protocol %s", protocol)
 	}
 
