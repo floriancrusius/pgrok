@@ -179,10 +179,11 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 	case "default":
 		config.Tunnels = make(map[string]*TunnelConfiguration)
 		config.Tunnels["default"] = &TunnelConfiguration{
-			Subdomain: opts.subdomain,
-			Hostname:  opts.hostname,
-			HttpAuth:  opts.httpauth,
-			Protocols: make(map[string]string),
+			Subdomain:  opts.subdomain,
+			Hostname:   opts.hostname,
+			HttpAuth:   opts.httpauth,
+			RemotePort: uint16(opts.remoteport),
+			Protocols:  make(map[string]string),
 		}
 
 		for _, proto := range strings.Split(opts.protocol, "+") {
@@ -207,7 +208,7 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 
 	// list tunnels
 	case "list":
-		for name, _ := range config.Tunnels {
+		for name := range config.Tunnels {
 			fmt.Println(name)
 		}
 		os.Exit(0)
@@ -229,7 +230,7 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 			}
 		}
 
-		for name, _ := range config.Tunnels {
+		for name := range config.Tunnels {
 			if !requestedTunnels[name] {
 				delete(config.Tunnels, name)
 			}

@@ -1,10 +1,12 @@
 package client
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"pgrok/version"
+	"strconv"
+
+	flag "github.com/ogier/pflag"
 )
 
 const usage1 string = `Usage: %s [OPTIONS] <local port or address>
@@ -48,6 +50,7 @@ type Options struct {
 	command       string
 	inspectaddr   string
 	serveraddr    string
+	remoteport    int
 	inspectpublic bool
 	tls           bool
 	tlsClientCrt  string
@@ -102,11 +105,6 @@ func ParseArgs() (opts *Options, err error) {
 		"",
 		"Request a custom hostname from the pgrok server. (HTTP only) (requires CNAME of your DNS)")
 
-	protocol := flag.String(
-		"proto",
-		"http+https",
-		"The protocol of the traffic over the tunnel (http+https|https|tcp)")
-
 	tls := flag.Bool(
 		"tls",
 		false,
@@ -146,7 +144,7 @@ func ParseArgs() (opts *Options, err error) {
 		loglevel:      *loglevel,
 		httpauth:      *httpauth,
 		subdomain:     *subdomain,
-		protocol:      *protocol,
+		protocol:      "http+https",
 		authtoken:     *authtoken,
 		hostname:      *hostname,
 		serveraddr:    *serveraddr,
@@ -158,6 +156,23 @@ func ParseArgs() (opts *Options, err error) {
 		command:       flag.Arg(0),
 	}
 
+	fmt.Println("flag", flag.Args())
+	fmt.Println("os", os.Args)
+
+	args := flag.Args()
+	if opts.command == "tcp" {
+		if len(args) == 3 {
+			remoteport, ok := strconv.Atoi(args[len(args)-1])
+			if ok != nil {
+				err = fmt.Errorf("TCP Port must be an integer, got %s", args[len(args)-1])
+				return
+			}
+			opts.remoteport = remoteport
+			args = args[:len(args)-1]
+		}
+		args = args[1:]
+		opts.protocol = "tcp"
+	}
 	switch opts.command {
 	case "list":
 		opts.args = flag.Args()[1:]
@@ -176,17 +191,15 @@ func ParseArgs() (opts *Options, err error) {
 			"an pgrok command.\n\nExample: To expose port 80, run " +
 			"'pgrok 80'")
 		return
-
 	default:
-		if len(flag.Args()) > 1 {
+		if len(args) > 1 {
 			err = fmt.Errorf("You may only specify one port to tunnel to on the command line, got %d: %v",
-				len(flag.Args()),
-				flag.Args())
+				len(args),
+				args)
 			return
 		}
-
 		opts.command = "default"
-		opts.args = flag.Args()
+		opts.args = args
 	}
 
 	return

@@ -13,6 +13,7 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/nsf/termbox-go v0.0.0-20190817171036-93860e161317
+	github.com/ogier/pflag v0.0.1
 	github.com/phayes/freeport v0.0.0-20180830031419-95f893ade6f2
 	github.com/rcrowley/go-metrics v0.0.0-20190826022208-cac0b30c2563
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
