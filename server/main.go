@@ -116,6 +116,10 @@ func Main() {
 		listeners["http"] = startHttpListener(opts.httpAddr, nil)
 	}
 
+	if opts.secret == "" {
+		opts.secret = os.Getenv("PGROK_SECRET")
+	}
+
 	// listen for https
 	if opts.httpsAddr != "" {
 		tlsConfigServer, err := LoadTLSConfigWithCA(opts.tlsCrt, opts.tlsKey, opts.tlsClientCA)
