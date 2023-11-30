@@ -26,7 +26,7 @@ jobs:
           go-version: 1.21
       - name: Install Deps
         run: |
-          sudo apt install -y make zip
+          sudo apt install -y make zip go-bindata
           go get -u golang.org/x/lint/golint
           go get -u github.com/jteeuwen/go-bindata/go-bindata
           git checkout -f
