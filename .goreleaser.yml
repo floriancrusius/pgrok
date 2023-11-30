@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 env:
   - GOPROXY=https://proxy.golang.org,direct
 before:
@@ -55,12 +56,12 @@ archives:
     builds:
       - pgrokd
     name_template: "pgrokd_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    replacements:
-      darwin: MacOS
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
+#     replacements:
+#       darwin: MacOS
+#       linux: Linux
+#       windows: Windows
+#       386: i386
+#       amd64: x86_64
     format_overrides:
       - goos: windows
         format: zip
@@ -68,69 +69,69 @@ archives:
     builds:
       - pgrok
     name_template: "pgrok_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    replacements:
-      darwin: MacOS
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
+#     replacements:
+#       darwin: MacOS
+#       linux: Linux
+#       windows: Windows
+#       386: i386
+#       amd64: x86_64
     format_overrides:
       - goos: windows
         format: zip
-brews:
-  - name: pgrok
-    ids:
-      - pgrok
-    tap:
-      owner: jerson
-      name: homebrew-tap
-    commit_author:
-      name: Gerson Alexander Pardo Gamez
-      email: jeral17@gmail.com
-    folder: Formula
-    homepage: "https://github.com/jerson/pgrok"
-    description: "Introspected tunnels to localhost a fork from pgrok."
-    install: |
-      bin.install "pgrok"
-    test: |
-      system "#{bin}/pgrok", "-v"
-  - name: pgrokd
-    ids:
-      - pgrokd
-    tap:
-      owner: jerson
-      name: homebrew-tap
-    commit_author:
-      name: Gerson Alexander Pardo Gamez
-      email: jeral17@gmail.com
-    folder: Formula
-    homepage: "https://github.com/jerson/pgrok"
-    description: "Server introspected tunnels to localhost a fork from pgrok."
-    install: |
-      bin.install "pgrokd"
-    test: |
-      system "#{bin}/pgrokd", "-v"
-scoop:
-  bucket:
-    owner: jerson
-    name: scoop-bucket
-  commit_author:
-    name: Gerson Alexander Pardo Gamez
-    email: jeral17@gmail.com
-  homepage: "https://github.com/jerson/pgrok"
-  description: "Introspected tunnels to localhost a fork from pgrok."
-  license: MIT
-nfpms:
-  - id: pgrok
-    homepage: "https://github.com/jerson/pgrok"
-    description: "Introspected tunnels to localhost a fork from pgrok."
-    maintainer: Gerson Alexander Pardo Gamez <jeral17@gmail.com>
-    license: MIT
-    formats:
-      - deb
-      - rpm
-    recommends:
-      - rpm
-    builds:
-      - pgrok
-      - pgrokd
+# brews:
+#   - name: pgrok
+#     ids:
+#       - pgrok
+#     tap:
+#       owner: jerson
+#       name: homebrew-tap
+#     commit_author:
+#       name: Gerson Alexander Pardo Gamez
+#       email: jeral17@gmail.com
+#     folder: Formula
+#     homepage: "https://github.com/jerson/pgrok"
+#     description: "Introspected tunnels to localhost a fork from pgrok."
+#     install: |
+#       bin.install "pgrok"
+#     test: |
+#       system "#{bin}/pgrok", "-v"
+#   - name: pgrokd
+#     ids:
+#       - pgrokd
+#     tap:
+#       owner: jerson
+#       name: homebrew-tap
+#     commit_author:
+#       name: Gerson Alexander Pardo Gamez
+#       email: jeral17@gmail.com
+#     folder: Formula
+#     homepage: "https://github.com/jerson/pgrok"
+#     description: "Server introspected tunnels to localhost a fork from pgrok."
+#     install: |
+#       bin.install "pgrokd"
+#     test: |
+#       system "#{bin}/pgrokd", "-v"
+# scoop:
+#   bucket:
+#     owner: jerson
+#     name: scoop-bucket
+#   commit_author:
+#     name: Gerson Alexander Pardo Gamez
+#     email: jeral17@gmail.com
+#   homepage: "https://github.com/jerson/pgrok"
+#   description: "Introspected tunnels to localhost a fork from pgrok."
+#   license: MIT
+# nfpms:
+#   - id: pgrok
+#     homepage: "https://github.com/jerson/pgrok"
+#     description: "Introspected tunnels to localhost a fork from pgrok."
+#     maintainer: Gerson Alexander Pardo Gamez <jeral17@gmail.com>
+#     license: MIT
+#     formats:
+#       - deb
+#       - rpm
+#     recommends:
+#       - rpm
+#     builds:
+#       - pgrok
+#       - pgrokd

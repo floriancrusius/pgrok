@@ -9,7 +9,6 @@ windows: deps assets
 	go build -o pgrok.exe ./cmd/pgrok
 	
 deps: 
-	go get github.com/ogier/pflag
 	go mod download
 
 compress:
