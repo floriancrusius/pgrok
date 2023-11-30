@@ -14,6 +14,7 @@ jobs:
       - uses: actions/setup-java@v4.0.0
         with:
           java-version: 17
+          distribution: 'adopt'
       - uses: android-actions/setup-android@v3.2.0
       - uses: nttld/setup-ndk@v1.4.2
         id: setup-ndk
