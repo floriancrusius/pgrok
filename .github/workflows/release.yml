@@ -51,10 +51,9 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: dist/archive/*
-          asset_name: ${{ env.VERSION }}-artifact.zip
-          asset_content_type: application/zip
-
+          asset_path: dist/archive/*.tar.gz
+          asset_name: pgrok*.tar.gz
+          asset_content_type: application/gzip
       - name: Build Docker image
         run: |
           docker build -f prod.Dockerfile -t ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/pgrok:latest -t ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/pgrok:${{ env.VERSION }} .
