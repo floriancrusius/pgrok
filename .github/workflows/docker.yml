@@ -72,7 +72,7 @@ jobs:
 
       - name: Run Docker container and execute build.sh
         run: |
-          docker run --rm -v $(pwd):/workspace ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/go-builder:${{ env.VERSION }} /bin/bash -c "cd /workspace && ./build.sh"
+          docker run --rm -v $(pwd):/workspace -u $(id -u):$(id -g) ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/go-builder:${{ env.VERSION }} /bin/bash -c "cd /workspace && ./build.sh"
 
       - name: Build Docker image from prod.Dockerfile
         run: |
