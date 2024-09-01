@@ -28,7 +28,7 @@ build() {
             output_name="${output_name}.exe"
         fi
 
-        CGO_ENABLED=0 GOOS=${target%_*} GOARCH=${target#*_} go build -ldflags "${ldflags_var}" -o dist/bin/${output_name} ${main_var}
+        CGO_ENABLED=0 GOOS=${target%_*} GOARCH=${target#*_} go build -buildvcs=false -ldflags "${ldflags_var}" -o dist/bin/${output_name} ${main_var}
 
         echo "Archiving ${binary_var}_${target}"
 
