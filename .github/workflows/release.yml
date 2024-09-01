@@ -48,12 +48,10 @@ jobs:
           ANDROID_NDK_TOOLCHAIN: ${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin
 
       - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
+        uses: jaywcjlove/github-action-upload-assets@main
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: dist/archive/*.tar.gz
-          asset_name: pgrok*.tar.gz
-          asset_content_type: application/gzip
+          asset-path: '["./dist/archive/*"]'
+          tag: ${{ github.ref }}
       - name: Build Docker image
         run: |
           docker build -f prod.Dockerfile -t ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/pgrok:latest -t ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/pgrok:${{ env.VERSION }} .
