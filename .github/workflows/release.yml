@@ -52,6 +52,7 @@ jobs:
         with:
           asset-path: '["./dist/archive/*"]'
           tag: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
         run: |
           docker build -f prod.Dockerfile -t ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/pgrok:latest -t ${{ secrets.REGISTRY_URL}}/${{ secrets.REGISTRY_USERNAME }}/pgrok:${{ env.VERSION }} .
