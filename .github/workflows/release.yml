@@ -51,7 +51,6 @@ jobs:
         uses: jaywcjlove/github-action-upload-assets@main
         with:
           asset-path: '["./dist/archive/*"]'
-          tag: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
         run: |
