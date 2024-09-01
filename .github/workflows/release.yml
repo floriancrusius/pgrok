@@ -1,8 +1,8 @@
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
+  # push:
+  #   tags:
+  #     - 'v*'
 
 name: Release
 
