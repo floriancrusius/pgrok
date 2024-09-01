@@ -21,21 +21,49 @@ build() {
     for target in "${targets_var[@]}"; do
         echo "Building for $target"
 
-        output_name="${binary_var}_${target}"
+        output_name="${binary_var}"
         
         # Add .exe extension for Windows binaries
         if [[ $target == windows* ]]; then
             output_name="${output_name}.exe"
         fi
 
-        CGO_ENABLED=0 GOOS=${target%_*} GOARCH=${target#*_} go build -buildvcs=false -ldflags "${ldflags_var}" -o dist/bin/${output_name} ${main_var}
+        CGO_ENABLED=0 GOOS=${target%_*} GOARCH=${target#*_} go build -ldflags "${ldflags_var}" -o dist/bin/${binary_var}_${target}/${output_name} ${main_var}
 
         echo "Archiving ${binary_var}_${target}"
 
+        case ${target#*_} in
+          arm64)
+            arch="ARM";;
+          amd64)
+            arch="x64";;
+          386)
+            arch="x86";;
+          *)
+            arch="${target#*_}";;
+        esac
+
+        case ${target%_*} in
+          windows)
+            os="windows";;
+          darwin)
+            os="macOS";;
+          linux)
+            os="linux";;
+          android)
+            os="android";;
+          *)
+            os="${target%_*}";;
+        esac
+
         if [[ $target == windows* ]]; then
-          zip dist/archive/${output_name}.zip dist/bin/${output_name}
+          cd dist/bin/${binary_var}_${target}/
+          zip ../../archive/${binary_var}_${os}_${arch}.zip *
+          cd ../../../
         else 
-          tar -czf dist/archive/${output_name}.tar.gz dist/bin/${output_name}
+          cd dist/bin/${binary_var}_${target}/
+          tar -czf ../../archive/${binary_var}_${os}_${arch}.tar.gz *
+          cd ../../../
         fi
 
     done
