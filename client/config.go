@@ -83,17 +83,15 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 		config.ServerAddr = defaultServerAddr
 	}
 
-	if config.Secret == "" {
+	if opts.secret != "" {
 		config.Secret = opts.secret
-		if config.Secret == "" {
-			config.Secret = os.Getenv("PGROK_SECRET")
-			if config.Secret == "" {
-				fmt.Print("Enter Password: ")
-				bytePassword, err := term.ReadPassword(int(syscall.Stdin))
-				if err == nil {
-					config.Secret = strings.TrimSpace(string(bytePassword))
-				}
-			}
+	} else if os.Getenv("PGROK_SECRET") != "" {
+		config.Secret = os.Getenv("PGROK_SECRET")
+	} else if config.Secret == "" {
+		fmt.Print("Enter Password: ")
+		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+		if err == nil {
+			config.Secret = strings.TrimSpace(string(bytePassword))
 		}
 	}
 
