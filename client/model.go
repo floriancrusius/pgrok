@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	defaultServerAddr   = "ninodeme.com:4443"
+	defaultServerAddr   = "example.com:4443"
 	defaultInspectAddr  = "127.0.0.1:4040"
 	pingInterval        = 20 * time.Second
 	maxPongLatency      = 15 * time.Second
